@@ -4,6 +4,7 @@ import { ConnectionPanel } from '@/components/ConnectionPanel';
 import { PredictionDisplay } from '@/components/PredictionDisplay';
 import { ConfidenceChart } from '@/components/ConfidenceChart';
 import { ShotSenseLogo } from '@/components/ShotSenseLogo';
+import { HelpDialog } from '@/components/HelpDialog';
 
 export default function ShotSenseAnalyzer() {
   const {
@@ -21,6 +22,7 @@ export default function ShotSenseAnalyzer() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-6">
+      <HelpDialog />
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header Section */}
         <div className="text-center space-y-6 py-8">
