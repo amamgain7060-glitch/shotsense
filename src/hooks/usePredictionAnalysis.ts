@@ -66,6 +66,18 @@ export const usePredictionAnalysis = (predictions: Prediction[]) => {
     };
   }, [predictions]);
 
+  const shotCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    predictions.forEach(prediction => {
+      counts[prediction.class] = (counts[prediction.class] || 0) + 1;
+    });
+    return counts;
+  }, [predictions]);
+
+  const totalShots = useMemo(() => {
+    return predictions.filter(p => p.class.toLowerCase() !== 'idle').length;
+  }, [predictions]);
+
   const chartData = useMemo(() => {
     return predictions.slice(-20).map((prediction, index) => ({
       x: index,
@@ -81,5 +93,7 @@ export const usePredictionAnalysis = (predictions: Prediction[]) => {
     averagePredictions,
     combinedResult,
     chartData,
+    shotCounts,
+    totalShots,
   };
 };
