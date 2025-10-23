@@ -191,7 +191,7 @@ export const useArduinoConnection = () => {
       }
       
       // Only return prediction if confidence is above threshold and not Idle with very low confidence
-      if (maxClass && maxConfidence > 0.7 && !(maxClass.toLowerCase().includes('idle') && maxConfidence < 0.1)) {
+      if (maxClass && maxConfidence > 0.01 && !(maxClass.toLowerCase().includes('idle') && maxConfidence < 0.1)) {
         return {
           class: maxClass,
           confidence: maxConfidence,
@@ -206,7 +206,7 @@ export const useArduinoConnection = () => {
 
   // Simulate incoming data for demo purposes
   const simulateData = useCallback(() => {
-    const classes = ['Forehand serve', 'Backhand serve', 'Net shot', 'Idle'];
+    const classes = ['Forehand_serve', 'Backhand_serve', 'Net_shot', 'Idle'];
     const probabilities = [Math.random(), Math.random(), Math.random(), Math.random()];
     const total = probabilities.reduce((sum, p) => sum + p, 0);
     const normalized = probabilities.map(p => p / total);
@@ -223,10 +223,6 @@ export const useArduinoConnection = () => {
     setPredictions(prev => [...prev, prediction].slice(-50));
   }, []);
 
-  const resetPredictions = useCallback(() => {
-    setPredictions([]);
-  }, []);
-
   return {
     connectionStatus,
     predictions,
@@ -236,6 +232,5 @@ export const useArduinoConnection = () => {
     connectBluetooth,
     disconnect,
     simulateData,
-    resetPredictions,
   };
 };
