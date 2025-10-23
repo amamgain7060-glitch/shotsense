@@ -1,8 +1,10 @@
 import { useArduinoConnection } from '@/hooks/useArduinoConnection';
 import { usePredictionAnalysis } from '@/hooks/usePredictionAnalysis';
+import { usePersistentShotCounts } from '@/hooks/usePersistentShotCounts';
 import { ConnectionPanel } from '@/components/ConnectionPanel';
 import { PredictionDisplay } from '@/components/PredictionDisplay';
 import { ConfidenceChart } from '@/components/ConfidenceChart';
+import { ShotCounter } from '@/components/ShotCounter';
 import { ShotSenseLogo } from '@/components/ShotSenseLogo';
 import { HelpDialog } from '@/components/HelpDialog';
 
@@ -16,9 +18,11 @@ export default function ShotSenseAnalyzer() {
     connectBluetooth,
     disconnect,
     simulateData,
+    resetPredictions,
   } = useArduinoConnection();
 
   const { latestPrediction, lastFivePredictions, averagePredictions, combinedResult, chartData } = usePredictionAnalysis(predictions);
+  const { shotCounts, totalShots, resetCounts } = usePersistentShotCounts(predictions);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-6">
@@ -91,8 +95,17 @@ export default function ShotSenseAnalyzer() {
           </div>
           
           <div className="backdrop-blur-sm bg-white/10 rounded-2xl border border-white/20 shadow-2xl">
-            <ConfidenceChart data={chartData} />
+            <ShotCounter
+              totalShots={totalShots}
+              shotCounts={shotCounts}
+              onReset={resetCounts}
+            />
           </div>
+        </div>
+
+        {/* Confidence Chart Below */}
+        <div className="backdrop-blur-sm bg-white/10 rounded-2xl border border-white/20 shadow-2xl">
+          <ConfidenceChart data={chartData} />
         </div>
 
         {/* Stats Footer */}
